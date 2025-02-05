@@ -5,10 +5,14 @@ require("dotenv").config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Activer CORS pour autoriser les connexions externes (comme Wix)
 app.use(cors());
 
-// Base de données simple d'horoscopes
+// Route principale pour vérifier si l’API est en ligne
+app.get("/", (req, res) => {
+  res.send("Bienvenue sur l'API d'horoscope !");
+});
+
+// Base de données d'horoscopes
 const horoscopes = {
   belier: {
     daily: "Aujourd’hui, soyez audacieux et prenez des initiatives.",
@@ -19,18 +23,12 @@ const horoscopes = {
     daily: "Prenez le temps de vous recentrer sur vos priorités.",
     weekly: "Des tensions familiales peuvent apparaître, restez calme.",
     monthly: "Un changement important dans votre carrière pourrait se profiler."
-  },
-  gemeaux: {
-    daily: "Une journée propice aux nouvelles rencontres.",
-    weekly: "Faites attention à vos finances cette semaine.",
-    monthly: "Une période de créativité s’annonce pour vous."
-  },
-  // Ajoute ici les autres signes astrologiques...
+  }
 };
 
-// Route pour récupérer un horoscope selon le signe et la période (daily, weekly, monthly)
+// Route pour récupérer un horoscope
 app.get("/horoscope", (req, res) => {
-  const { sign, type } = req.query; // Lire les paramètres de la requête
+  const { sign, type } = req.query;
   if (!sign || !type) {
     return res.status(400).json({ error: "Veuillez fournir un signe et un type (daily, weekly, monthly)." });
   }
@@ -45,6 +43,5 @@ app.get("/horoscope", (req, res) => {
 
 // Démarrer le serveur
 app.listen(PORT, () => {
-  console.log(`✅ API d'horoscope en ligne sur http://localhost:${PORT}`);
+  console.log(`✅ API d'horoscope en ligne sur le port ${PORT}`);
 });
- 
